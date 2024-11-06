@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/lingua-api-gateway/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/lingua-api-gateway/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/lingua-api-gateway",
+  "projects": {
+    "lingua-api-gateway": {
+      "type": "application",
+      "root": "apps/lingua-api-gateway",
+      "entryFile": "main",
+      "sourceRoot": "apps/lingua-api-gateway/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/lingua-api-gateway/tsconfig.app.json"
+      }
+    },
+    "learning": {
+      "type": "application",
+      "root": "apps/learning",
+      "entryFile": "main",
+      "sourceRoot": "apps/learning/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/learning/tsconfig.app.json"
+      }
+    },
+    "exams": {
+      "type": "application",
+      "root": "apps/exams",
+      "entryFile": "main",
+      "sourceRoot": "apps/exams/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/exams/tsconfig.app.json"
+      }
+    },
+    "users": {
+      "type": "application",
+      "root": "apps/users",
+      "entryFile": "main",
+      "sourceRoot": "apps/users/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/users/tsconfig.app.json"
+      }
+    },
+    "payments": {
+      "type": "application",
+      "root": "apps/payments",
+      "entryFile": "main",
+      "sourceRoot": "apps/payments/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/payments/tsconfig.app.json"
+      }
+    }
+  }
+}
