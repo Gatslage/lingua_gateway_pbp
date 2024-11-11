@@ -6,6 +6,7 @@ import { UserAuth } from './entities/auth.entity';
 import { UsersModule } from '../users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import {ConfigModule, ConfigService } from '@nestjs/config';
+import { ValidateToken } from './interceptors/auth.interceptor';
 
 @Module({
   imports: [UsersModule,
@@ -21,8 +22,9 @@ import {ConfigModule, ConfigService } from '@nestjs/config';
       inject: [ConfigService],
     })
   ],
-  providers: [AuthService],
-  controllers: [AuthController,OtherAuthController]
+  providers: [AuthService,ValidateToken],
+  controllers: [AuthController,OtherAuthController],
+  exports:[]
 })
 
 export class AuthModule {}

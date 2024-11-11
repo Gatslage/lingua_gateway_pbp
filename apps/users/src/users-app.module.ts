@@ -8,6 +8,7 @@ import { User } from './users/entities/user.entity';
 import { AuthModule } from './auth/auth.module';
 import { UserAuth } from './auth/entities/auth.entity';
 import { ConfigModule } from '@nestjs/config';
+import { LoggerModule } from 'nestjs-pino';
 
 @Module({
   //imports: [TrackingModule, UsersModule,MongooseModule.forFeature([{name:User.name,schema:UserSchema}])],
@@ -30,10 +31,24 @@ import { ConfigModule } from '@nestjs/config';
       name:'mongodb_user',
       entities:[User]
     }
+  ),LoggerModule.forRoot({
+    pinoHttp: {
+      customProps: (req, res) => ({
+        context: 'HTTP',
+      }),
+      transport: {pipeline:[{
+        target: 'pino-pretty',
+      },{
+        target:'pino/file',
+        options:{ destination: `./logs/app.log` },
+      }]
+      },
+    },
+}
   ),
 ],
   controllers: [],
-  providers: [],
+  providers: []
 })
 
 export class UsersAppModule {}

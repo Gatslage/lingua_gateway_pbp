@@ -1,9 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { AddToken } from '../interceptors/authtoken.interceptor';
 
 @Controller('users')
+@UseInterceptors(AddToken)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
@@ -13,8 +15,8 @@ export class UsersController {
   }
 
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  findAll(@Body() data){
+    return this.usersService.findAll({sendToken:data.sendToken});
   }
 
   @Get(':id')

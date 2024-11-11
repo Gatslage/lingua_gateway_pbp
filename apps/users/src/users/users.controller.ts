@@ -1,9 +1,11 @@
-import { Controller } from '@nestjs/common';
+import { Controller, UseInterceptors } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ValidateTokenGlobal } from '@app/auth-library/auth-library.interceptor';
 
+@UseInterceptors(ValidateTokenGlobal)
 @Controller()
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}

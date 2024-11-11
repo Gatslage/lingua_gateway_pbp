@@ -1,6 +1,6 @@
 import { Body, Controller, Inject, UseInterceptors } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { MessagePattern } from '@nestjs/microservices';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import { GeneralUserDto } from '../general-user.dto';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { ValidateToken } from './interceptors/auth.interceptor';
@@ -11,13 +11,18 @@ export class AuthController {
 
 
     @MessagePattern('users.auth.register')
-    subcribe(@Body() newUser:GeneralUserDto){
+    subcribe(@Payload() newUser:GeneralUserDto){
         return this.AuthService.register(newUser);
     }
 
     @MessagePattern('users.auth.login')
-    login(@Body() user:CreateAuthDto){
+    login(@Payload() user:CreateAuthDto){
         return this.AuthService.login(user);
+    }
+
+    @MessagePattern('users.auth.verifytoken')
+    verifyToken(@Payload() tokenObject){
+        return this.AuthService.verify_token(tokenObject.token)
     }
 
 }

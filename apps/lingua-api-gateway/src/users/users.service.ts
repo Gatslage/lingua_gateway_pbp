@@ -15,8 +15,8 @@ export class UsersService {
     return 'This action adds a new user';
   }
 
-  findAll() {
-    return this.userclient.send('users.findAll',{});
+  findAll(data) {
+    return this.userclient.send('users.findAll',data);
   }
 
   findOne(id: number) {

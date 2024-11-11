@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { UsersAppModule } from './users-app.module';
 import { MicroserviceOptions,Transport } from '@nestjs/microservices';
+import { Logger } from 'nestjs-pino';
 
 
 async function bootstrap() {
@@ -10,6 +11,7 @@ async function bootstrap() {
       port:3001
     }
   });
+  app.useLogger(app.get(Logger));
   await app.listen();
 }
 bootstrap();

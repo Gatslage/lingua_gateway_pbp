@@ -3,10 +3,9 @@ import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { GeneralUserDto } from '../../general-user.dto';
-import { AddToken } from 'apps/lingua-api-gateway/src/interceptors/users.interceptor';
+import { AddToken } from 'apps/lingua-api-gateway/src/interceptors/authtoken.interceptor';
 
 @Controller('auth')
-@UseInterceptors(AddToken)
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
@@ -19,6 +18,14 @@ export class AuthController {
   register(@Body() newUser: GeneralUserDto) {
     return this.authService.register(newUser);
   }
+
+  
+}
+
+@Controller('auth')
+@UseInterceptors(AddToken)
+export class OtherAuthController{
+  constructor(private readonly authService: AuthService) {}
 
   @Get()
   findAll(@Body() data) {

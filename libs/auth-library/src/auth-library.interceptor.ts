@@ -4,22 +4,23 @@ import {
     ExecutionContext,
     CallHandler,
     UnauthorizedException,
+    Inject,
 } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { Logger } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { ClientProxy } from '@nestjs/microservices';
+
 @Injectable()
-export class ValidateToken implements NestInterceptor {
-    constructor(private jwtservice:JwtService){}
-    private Log = new Logger("Interceptor: "+ ValidateToken.name) 
+export class ValidateTokenGlobal implements NestInterceptor {
+    constructor(@Inject('USERS_CLIENT') private UserClient: ClientProxy){}
+    private Log = new Logger("Interceptor: "+ ValidateTokenGlobal.name) 
     async intercept(context: ExecutionContext, next: CallHandler): Promise<Observable<any>> {
         this.Log.log("start method intercept")
         //const request = context.switchToRpc().getContext();
         this.Log.log("extract token")
         const request = context.switchToRpc().getData();
-        const token = request.sendToken;
-        console.log("preee "+ request.sendToken) 
+        const token = request.sendToken; 
         //const autho = request.headers?.authorization;
         //const token = autho?.split(' ')[1];
         // console.log( request?.args)
@@ -30,12 +31,8 @@ export class ValidateToken implements NestInterceptor {
 
         //verify token
         try{
-            const result = await this.jwtservice.verifyAsync(token)
-            const pay_load = {
-                email:result.sub,
-                username:result.username
-                
-            }
+            const pay_load = this.UserClient.send('users.auth.verifytoken',token)
+            
             request.user = pay_load;
             console.log(request)           
         return next.handle().pipe(

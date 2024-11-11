@@ -11,7 +11,7 @@ import { map } from 'rxjs/operators';
 export class AddToken implements NestInterceptor {
     intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
         const request = context.switchToHttp().getRequest();
-        const token = request.headers.authorization.split(' ')[1];
+        const token = request.headers.authorization?.split(' ')[1];
         request.body.sendToken = token;
 /*        // Ajoutez ici la logique pour modifier le corps du message
         const originalSend = context.getArgByIndex(1).send;
